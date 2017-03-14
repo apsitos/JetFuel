@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/apsitos/JetFuel/issues"
   },
-  "homepage": "https://github.com/apsitos/JetFuel#readme"
+  "homepage": "https://github.com/apsitos/JetFuel#readme",
+  "dependencies": {
+    "axios": "^0.15.3"
+  }
 }
