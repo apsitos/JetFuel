@@ -21,20 +21,20 @@ const makeFolder = (folderName)=> {
 const addFolders = (folderName) => {
   axios.get('/api/folders')
   .then((response) => {
-    console.log(response);
     $('.folder-list').text('');
     response.data.map((folder) => {
       $('.folder-list').append(
-        `<li data-id=folder.id>
-          <a id="bob">${folder.folderName}</a>
+        `<li data-id=${folder.id}>
+          <a href="javascript:getUrls()">${folder.folderName}</a>
         </li>`
       )
     })
   })
 }
 
-//
-// <ol>
-// response.body.map((folder) => {
-//   <li data-id:folder.id><a id="">folder.name<li>
-// })
+const getUrls = () => {
+  axios.get('/api/folders/:folderName')
+  .then((response) => {
+    console.log(response);
+  })
+}
