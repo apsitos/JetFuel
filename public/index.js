@@ -7,12 +7,12 @@ $(document).ready(() => {
 
 $('.create-folder').on('click', () => {
   let folderName = folders.val();
-  addFolders(folderName);
   makeFolder(folderName)
+  addFolders(folderName);
 })
 
 const retrieveFolders = () => {
-  fetch('/api/folders')
+  axios.get('/api/folders')
 }
 
 
@@ -24,12 +24,17 @@ const makeFolder = (folderName)=> {
 }
 
 const addFolders = (folderName) => {
-  alert('Folder Append');
-  $('.folder-list').append(
-    `<li>
-      <h2>${folderName}</h2>
-    </li>`
-  );
+  axios.get('/api/folders')
+  .then((response) => {
+    console.log(response);
+    response.data.map((folder) => {
+      $('.folder-list').append(
+        `<li data-id=folder.id>
+          <a id="bob">${folder.folderName}</a>
+        </li>`
+      )
+    })
+  })
 }
 
 //
