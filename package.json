@@ -19,6 +19,9 @@
   },
   "homepage": "https://github.com/apsitos/JetFuel#readme",
   "dependencies": {
-    "axios": "^0.15.3"
+    "axios": "^0.15.3",
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "md5": "^2.2.1"
   }
 }
