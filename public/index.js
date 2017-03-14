@@ -1,8 +1,8 @@
 const folders = $('.folder-name');
 
 
-$(document).ready(() => {
-  retrieveFolders();
+$(document).ready((folderName) => {
+  addFolders(folderName);
 });
 
 $('.create-folder').on('click', () => {
@@ -10,11 +10,6 @@ $('.create-folder').on('click', () => {
   makeFolder(folderName)
   addFolders(folderName);
 })
-
-const retrieveFolders = () => {
-  axios.get('/api/folders')
-}
-
 
 const makeFolder = (folderName)=> {
   axios.post('/api/folders',{
@@ -27,6 +22,7 @@ const addFolders = (folderName) => {
   axios.get('/api/folders')
   .then((response) => {
     console.log(response);
+    $('.folder-list').text('');
     response.data.map((folder) => {
       $('.folder-list').append(
         `<li data-id=folder.id>
