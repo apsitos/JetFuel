@@ -25,7 +25,7 @@ const addFolders = (folderName) => {
     $('.folder-list').text('');
     response.data.map((folder) => {
       $('.folder-list').append(
-        `<li data-id=folder.id>
+        `<li data-id=${folder.id}>
           <a id="bob">${folder.folderName}</a>
         </li>`
       )
