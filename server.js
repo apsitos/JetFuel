@@ -34,6 +34,7 @@ app.post('/api/folders', (request, response) => {
   const { folderName } = request.body;
   app.locals.folders.push({ id, folderName });
   response.json({ id, folderName });
+  console.log({folderName})
 })
 
 app.post('/api/urls', (request, response) => {
