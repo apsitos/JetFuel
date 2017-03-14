@@ -18,9 +18,9 @@ const retrieveFolders = () => {
 
 const makeFolder = (folderName)=> {
   axios.post('/api/folders',{
-      folder:folderName
-    }
-  )
+      folderName:folderName
+    })
+    console.log(folderName)
 }
 
 const addFolders = (folderName) => {
