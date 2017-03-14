@@ -26,15 +26,13 @@ const addFolders = (folderName) => {
     response.data.map((folder) => {
       $('.folder-list').append(
         `<li data-id=${folder.id}>
-          <a id="bob">${folder.folderName}</a>
+          <a href="javascript:random()">${folder.folderName}</a>
         </li>`
       )
     })
   })
 }
 
-//
-// <ol>
-// response.body.map((folder) => {
-//   <li data-id:folder.id><a id="">folder.name<li>
-// })
+const random = () => {
+  alert('I click!')
+}
