@@ -1,5 +1,5 @@
 const folders = $('.folder-name');
-const axios = require('axios');
+
 
 $(document).ready(() => {
   retrieveFolders();
@@ -7,11 +7,20 @@ $(document).ready(() => {
 
 $('.create-folder').on('click', () => {
   let folderName = folders.val();
-  addFolder(folderName);
+  addFolders(folderName);
+  makeFolder(folderName)
 })
 
 const retrieveFolders = () => {
   fetch('/api/folders')
+}
+
+
+const makeFolder = (folderName)=> {
+  axios.post('/api/folders',{
+      folder:folderName
+    }
+  )
 }
 
 const addFolders = (folderName) => {
@@ -23,8 +32,8 @@ const addFolders = (folderName) => {
   );
 }
 
-
-<ol>
-response.body.map((folder) => {
-  <li data-id:folder.id><a id="">folder.name<li>
-})
+//
+// <ol>
+// response.body.map((folder) => {
+//   <li data-id:folder.id><a id="">folder.name<li>
+// })
