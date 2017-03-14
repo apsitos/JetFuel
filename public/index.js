@@ -21,18 +21,20 @@ const makeFolder = (folderName)=> {
 const addFolders = (folderName) => {
   axios.get('/api/folders')
   .then((response) => {
-    console.log(response);
     $('.folder-list').text('');
     response.data.map((folder) => {
       $('.folder-list').append(
         `<li data-id=${folder.id}>
-          <a href="javascript:random()">${folder.folderName}</a>
+          <a href="javascript:getUrls()">${folder.folderName}</a>
         </li>`
       )
     })
   })
 }
 
-const random = () => {
-  alert('I click!')
+const getUrls = () => {
+  axios.get('/api/folders/:folderName')
+  .then((response) => {
+    console.log(response);
+  })
 }

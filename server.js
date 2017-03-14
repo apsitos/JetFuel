@@ -21,7 +21,7 @@ app.get('/', (request, response) => {
   })
 })
 
-app.get('/folders/:folderName', (request, response) => {
+app.get('/api/folders/:folderName', (request, response) => {
   response.json(app.locals.urls);
 })
 
