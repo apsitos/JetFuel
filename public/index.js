@@ -57,11 +57,13 @@ const getUrls = () => {
 
 const saveUrl = (e) => {
   const folderId = e.target.id;
+  const counter = 0;
   const longUrl = $('.long-url').val();
   const timestamp = Date.now();
   axios.post('/api/urls', {
     folderId,
     longUrl,
+    counter,
     timestamp
   })
 }
