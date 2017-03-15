@@ -16,8 +16,10 @@ app.locals.folders = [{
 }]
 app.locals.urls = [{
   urlid:123,
+  folderID: 1,
   longUrl:'www.foodnetwork.com',
-  folderID: 1
+  counter: 0,
+  timestamp: ''
 }]
 
 app.use(express.static('public'))
@@ -28,8 +30,6 @@ app.get('/', (request, response) => {
   })
 })
 
-
-
 app.get('/api/folders', (request, response) => {
   response.json(app.locals.folders);
 })
@@ -39,7 +39,7 @@ app.get('/api/folders/:folderName', (request, response) => {
 })
 
 app.post('/api/folders', (request, response) => {
-  const id = md5('folderName');
+  const id = md5(request.body.folderName);
   const { folderName } = request.body;
   app.locals.folders.push({ id, folderName });
   response.json({ id, folderName });
@@ -47,9 +47,14 @@ app.post('/api/folders', (request, response) => {
 })
 
 app.post('/api/urls', (request, response) => {
-  const { folderId, longURL } = request.body;
-  app.locals.urls.push({ folderId, url });
-  response.json({ folderId, url });
+  const id = md5(request.body.longUrl);
+  const { folderId, longUrl, timestamp } = request.body;
+  let counter;
+  ++counter;
+  if (folderId === app.locals.folders.id) {
+    app.locals.urls.push({ folderId, longUrl, counter, timestamp });
+  }
+  response.json({ folderId, longUrl, counter, timestamp });
 })
 
 app.listen(app.get('port'), ()=>{

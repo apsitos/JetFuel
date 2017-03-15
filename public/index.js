@@ -16,7 +16,8 @@ $('.folder-list').on('click', (event) => {
 })
 
 $('.shortened-links').on('click', ".shorten-url", (e) => {
-  console.log('button clicked');
+  console.log('url shortened');
+  saveUrl(e);
 })
 
 const makeFolder = (folderName)=> {
@@ -47,10 +48,21 @@ const getUrls = () => {
     response.data.map((folder) => {
       $('.shortened-links').append(
         `<ul><li>${folder.longUrl}</li></ul>
-        <input class = 'long-url' type='text' placeholder='shorten a url'  />
-        <button class='shorten-url' type='button'>Submit</button>`
+        <input class = 'long-url' type='text' placeholder='shorten a url' />
+        <button class='shorten-url' id=${folder.folderID} type='button'>Submit</button>`
       )
     });
+  })
+}
+
+const saveUrl = (e) => {
+  const folderId = e.target.id;
+  const longUrl = $('.long-url').val();
+  const timestamp = Date.now();
+  axios.post('/api/urls', {
+    folderId,
+    longUrl,
+    timestamp
   })
 }
 
