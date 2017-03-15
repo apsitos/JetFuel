@@ -21,13 +21,12 @@ const makeFolder = (folderName)=> {
 const addFolders = (folderName) => {
   axios.get('/api/folders')
   .then((response) => {
+    console.log(response.data)
     $('.folder-list').text('');
     response.data.map((folder) => {
       $('.folder-list').append(
         `<li data-id=${folder.id}>
           <a href="javascript:getUrls()">${folder.folderName}</a>
-          <input class = 'long-url' type='text' placeholder='shorten a url'  />
-          <button class='shorten-url' type='button'>Submit</button>
         </li>`
       )
     })
@@ -35,9 +34,18 @@ const addFolders = (folderName) => {
 }
 
 const getUrls = () => {
+
   axios.get('/api/folders/:folderName')
   .then((response) => {
-    console.log(response);
+    response.data.map((folder) => {
+      $('.folder-list').append(
+        `<ul class = 'urls'>
+        <li>${folder.longUrl}</li>
+       </ul>
+          <input class = 'long-url' type='text' placeholder='shorten a url'  />
+        <button class='shorten-url' type='button'>Submit</button>`
+      )
+    });
   })
 }
 
