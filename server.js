@@ -10,8 +10,15 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 app.set('port', process.env.PORT || 3000)
 app.locals.title = 'JetFuel'
-app.locals.folders = []
-app.locals.urls = []
+app.locals.folders = [{
+  id:1,
+  folderName:'Food'
+}]
+app.locals.urls = [{
+  urlid:123,
+  longUrl:'www.foodnetwork.com',
+  folderID: 1
+}]
 
 app.use(express.static('public'))
 
@@ -21,12 +28,14 @@ app.get('/', (request, response) => {
   })
 })
 
-app.get('/api/folders/:folderName', (request, response) => {
-  response.json(app.locals.urls);
-})
+
 
 app.get('/api/folders', (request, response) => {
   response.json(app.locals.folders);
+})
+
+app.get('/api/folders/:folderName', (request, response) => {
+  response.json(app.locals.urls);
 })
 
 app.post('/api/folders', (request, response) => {

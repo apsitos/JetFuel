@@ -26,6 +26,8 @@ const addFolders = (folderName) => {
       $('.folder-list').append(
         `<li data-id=${folder.id}>
           <a href="javascript:getUrls()">${folder.folderName}</a>
+          <input class = 'long-url' type='text' placeholder='shorten a url'  />
+          <button class='shorten-url' type='button'>Submit</button>
         </li>`
       )
     })
@@ -38,3 +40,25 @@ const getUrls = () => {
     console.log(response);
   })
 }
+
+
+
+// `<div data-id=folder.id>
+//   <input id="newUrl">Enter new url</a>
+//   <ol>
+//     <ol>
+// </div>`
+//
+// on('click', () => {
+//   const longURL = $('#newURL').value
+//   const id = $('#newURL').parent.data-id
+//   axios.post('/folders/urls') {
+//     body,
+//     folderID: id,
+//   }
+// })
+
+// <ol>
+// response.body.map((folder) => {
+//   <li data-id:folder.id><a id="">folder.name<li>
+// })
