@@ -54,21 +54,38 @@ app.get('/api/folders/:id/urls', (request, response) => {
 
 })
 
-
 app.post('/api/folders', (request, response) => {
   const { name } = request.body;
   const id = md5(name);
-  app.locals.folders.push({ id, name });
-  response.json({ id, name });
-  // console.log({name})
+  const folder = { id, name, created_at: new Date};
+
+  database('folders').insert(folder)
+    .then(() => {
+      database('folders').select()
+        .then((folders) => {
+          response.status(200).json(folders)
+        })
+        .catch((error) => {
+          console.error('something wrong with the db post');
+        })
+  })
 })
 
 app.post('/api/urls', (request, response) => {
   const {folderId, longUrl } = request.body;
   const id = md5(longUrl);
-  const url ={ id, folderId, longUrl, clicks:0, timestamp:Date.now() }
-  app.locals.urls.push(url);
-  response.json(url);
+  const url ={ id, folderId, longUrl, clicks:0, created_at: new Date }
+
+  database('urls').insert(url)
+    .then(() => {
+      database('urls').select()
+        .then((url) => {
+          response.status(200).json(url)
+        })
+        .catch((error) => {
+          console.error('something wrong with the db post');
+        })
+  })
 })
 
 app.listen(app.get('port'), ()=>{
