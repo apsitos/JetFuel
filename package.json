@@ -4,7 +4,7 @@
   "description": "This application was developed by Mike Ziccardi and Anna Psitos based on the requirements of Turing. (See [here](http://frontend.turing.io/projects/jet-fuel.html).)",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node_modules/.bin/mocha ./tests/**.js || true",
     "start": "node server.js"
   },
   "repository": {
