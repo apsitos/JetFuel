@@ -15,7 +15,7 @@ app.locals.folders = [{
   name:'food'
 }]
 app.locals.urls = [{
-  folderID:1,
+  folderId:1,
   longUrl:'www.foodnetwork.com',
   id: '123e23097420984',
   clicks:0
@@ -45,8 +45,9 @@ app.get('/api/folders', (request, response) => {
 
 app.get('/api/folders/:id/urls', (request, response) => {
   const urls = app.locals.urls.filter((url) => {
-    return url.folderID == request.params.id
+    return url.folderId == request.params.id
   })
+  console.log(urls)
   response.json(urls);
 
 })
@@ -64,7 +65,7 @@ app.post('/api/urls', (request, response) => {
   const {folderId, longUrl } = request.body;
   const id = md5(longUrl);
   const url ={ id, folderId, longUrl, counter:0, timestamp:Date.now() }
-    app.locals.urls.push(url);
+  app.locals.urls.push(url);
   response.json(url);
 })
 

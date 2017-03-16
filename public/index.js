@@ -13,13 +13,13 @@ $('.create-folder').on('click', () => {
 
 $('.folder-list').on('click', (event) => {
   let id = event.target.dataset.id
+  console.log(id)
   getUrls(id);
 })
 
 $('.shortened-links').on('click', ".shorten-url", (e) => {
   const folderId = e.target.parentElement.dataset.id;
   const longUrl = $('.long-url').val();
-
   saveUrl(folderId, longUrl);
 })
 
@@ -51,21 +51,26 @@ const getUrls = (id) => {
   axios.get(`/api/folders/${id}/urls`)
   .then((response) => {
     if(response.data.length === 0){
-      // console.log(response)
+      console.log(response)
+      $('.shortened-links').empty()
       $('.shortened-links').append(
+
       `<div data-id=${id}>
         <input class = 'long-url' type='text' placeholder='shorten a url' />
         <button class='shorten-url' type='button'>Submit</button>
+        <ul class= 'url-list'></ul>
       </div>`
       )
 
     }else{
       response.data.map((url) => {
+        console.log(response)
+        $('.shortened-links').empty()
         $('.shortened-links').append(
         `<div data-id = ${id}>
         <input class = 'long-url' type='text' placeholder='shorten a url' />
         <button class='shorten-url' type='button'>Submit</button>
-          <ul class= 'url-list'><li>${url.longUrl}</li></ul>
+          <ul class= 'url-list'><li data-id = ${url.id}>${url.longUrl}</li></ul>
         </div>`
         )})
     }
