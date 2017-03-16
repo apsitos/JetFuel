@@ -31,7 +31,6 @@ const makeFolder = (name)=> {
   axios.post('/api/folders',{
       name:name
     })
-    // console.log(name)
 }
 
 const addFolders = (name) => {

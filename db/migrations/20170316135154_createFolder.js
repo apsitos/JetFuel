@@ -14,6 +14,7 @@ exports.up = function(knex, Promise) {
                  .references('id')
                  .inTable('folders');
             table.string('longUrl');
+            table.string('short');
             table.integer('clicks');
 
             table.timestamps();
