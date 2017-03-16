@@ -4,6 +4,9 @@ const md5 = require('md5');
 const fs = require('fs');
 const app = express();
 
+const environment = process.env.NODE_ENV || 'development';
+const configuration = require('./knexfile')[environment];
+const database = require('knex')(configuration);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -31,42 +34,58 @@ app.get('/', (request, response) => {
 })
 
 app.get('/api/folders', (request, response) => {
-  response.json(app.locals.folders);
+  database('folders').select()
+          .then((folders) => {
+            response.status(200).json(folders);
+          })
+          .catch((error) => {
+            console.error('something is wrong with the db');
+          })
 })
-
-// app.get('/api/folders/:name', (request, response) => {
-//   console.log(app.locals.urls)
-//   if(app.locals.urls.length===0){
-//     response.json(app.locals.folders);
-//   }else{
-//     response.json(app.locals.urls);
-//   }
-// })
 
 app.get('/api/folders/:id/urls', (request, response) => {
-  const urls = app.locals.urls.filter((url) => {
-    return url.folderId == request.params.id
-  })
-  console.log(urls)
-  response.json(urls);
+  database('urls').where('folderId', request.params.id).select()
+          .then((urls) => {
+            response.status(200).json(urls)
+          })
+          .catch((error) => {
+            console.error('something is wrong with the redirect');
+          })
 
 })
-
 
 app.post('/api/folders', (request, response) => {
   const { name } = request.body;
   const id = md5(name);
-  app.locals.folders.push({ id, name });
-  response.json({ id, name });
-  // console.log({name})
+  const folder = { id, name, created_at: new Date};
+
+  database('folders').insert(folder)
+    .then(() => {
+      database('folders').select()
+        .then((folders) => {
+          response.status(200).json(folders)
+        })
+        .catch((error) => {
+          console.error('something wrong with the db post');
+        })
+  })
 })
 
 app.post('/api/urls', (request, response) => {
   const {folderId, longUrl } = request.body;
   const id = md5(longUrl);
-  const url ={ id, folderId, longUrl, counter:0, timestamp:Date.now() }
-  app.locals.urls.push(url);
-  response.json(url);
+  const url ={ id, folderId, longUrl, clicks:0, created_at: new Date }
+
+  database('urls').insert(url)
+    .then(() => {
+      database('urls').select()
+        .then((url) => {
+          response.status(200).json(url)
+        })
+        .catch((error) => {
+          console.error('something wrong with the db post');
+        })
+  })
 })
 
 app.listen(app.get('port'), ()=>{
