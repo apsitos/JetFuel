@@ -21,10 +21,13 @@ $('.folder-list').on('click', (event) => {
 $('.shortened-links').on('click', ".shorten-url", (e) => {
   const folderId = $(".selected").attr("data-id");
   const longUrl = $('.long-url').val();
+  let id = event.target.dataset.id
+
   console.log("folderId", folderId);
   console.log("longUrl", longUrl);
 
   saveUrl(folderId, longUrl);
+  getUrls(id);
 })
 
 const makeFolder = (name)=> {
