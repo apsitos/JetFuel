@@ -44,7 +44,7 @@ app.get('/api/folders', (request, response) => {
 })
 
 app.get('/api/folders/:id/urls', (request, response) => {
-  database('urls').where('folderId', request.params.id).select()
+  database('urls').where('folderId', request.params.id)
           .then((urls) => {
             response.status(200).json(urls)
           })
@@ -74,7 +74,9 @@ app.post('/api/folders', (request, response) => {
 app.post('/api/urls', (request, response) => {
   const {folderId, longUrl } = request.body;
   const id = md5(longUrl);
-  const url ={ id, folderId, longUrl, clicks:0, created_at: new Date }
+  const short = id.slice(0,5)
+  console.log(short);
+  const url ={ id, folderId, longUrl, short, clicks:0, created_at: new Date }
 
   database('urls').insert(url)
     .then(() => {
@@ -83,7 +85,7 @@ app.post('/api/urls', (request, response) => {
           response.status(200).json(url)
         })
         .catch((error) => {
-          console.error('something wrong with the db post');
+          console.error('something wrong with the db urls post');
         })
   })
 })
