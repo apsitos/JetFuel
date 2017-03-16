@@ -40,18 +40,17 @@ app.get('/api/folders', (request, response) => {
           })
           .catch((error) => {
             console.error('something is wrong with the db');
-          });
+          })
 })
 
 app.get('/api/folders/:id/urls', (request, response) => {
   database('urls').where('folderId', request.params.id).select()
-  )
-
-  filter((url) => {
-    return url.folderId == request.params.id
-  })
-  console.log(urls)
-  response.json(urls);
+          .then((urls) => {
+            response.status(200).json(urls)
+          })
+          .catch((error) => {
+            console.error('something is wrong with the redirect');
+          })
 
 })
 
