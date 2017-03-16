@@ -64,7 +64,7 @@ app.post('/api/folders', (request, response) => {
 app.post('/api/urls', (request, response) => {
   const {folderId, longUrl } = request.body;
   const id = md5(longUrl);
-  const url ={ id, folderId, longUrl, counter:0, timestamp:Date.now() }
+  const url ={ id, folderId, longUrl, clicks:0, timestamp:Date.now() }
   app.locals.urls.push(url);
   response.json(url);
 })
