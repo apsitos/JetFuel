@@ -12,15 +12,15 @@ app.set('port', process.env.PORT || 3000)
 app.locals.title = 'JetFuel'
 app.locals.folders = [{
   id:1,
-  folderName:'Food'
+  name:'food'
 }]
 app.locals.urls = [{
-  urlid:123,
-  folderID: 1,
+  folderID:1,
   longUrl:'www.foodnetwork.com',
-  counter: 0,
-  timestamp: ''
+  id: '123e23097420984',
+  clicks:0
 }]
+
 
 app.use(express.static('public'))
 
@@ -34,27 +34,38 @@ app.get('/api/folders', (request, response) => {
   response.json(app.locals.folders);
 })
 
-app.get('/api/folders/:folderName', (request, response) => {
-  response.json(app.locals.urls);
+// app.get('/api/folders/:name', (request, response) => {
+//   console.log(app.locals.urls)
+//   if(app.locals.urls.length===0){
+//     response.json(app.locals.folders);
+//   }else{
+//     response.json(app.locals.urls);
+//   }
+// })
+
+app.get('/api/folders/:id/urls', (request, response) => {
+  const urls = app.locals.urls.filter((url) => {
+    return url.folderID == request.params.id
+  })
+  response.json(urls);
+
 })
 
+
 app.post('/api/folders', (request, response) => {
-  const id = md5(request.body.folderName);
-  const { folderName } = request.body;
-  app.locals.folders.push({ id, folderName });
-  response.json({ id, folderName });
-  console.log({folderName})
+  const { name } = request.body;
+  const id = md5(name);
+  app.locals.folders.push({ id, name });
+  response.json({ id, name });
+  // console.log({name})
 })
 
 app.post('/api/urls', (request, response) => {
-  const id = md5(request.body.longUrl);
-  const { folderId, longUrl, timestamp } = request.body;
-  let counter;
-  ++counter;
-  if (folderId === app.locals.folders.id) {
-    app.locals.urls.push({ folderId, longUrl, counter, timestamp });
-  }
-  response.json({ folderId, longUrl, counter, timestamp });
+  const {folderId, longUrl } = request.body;
+  const id = md5(longUrl);
+  const url ={ id, folderId, longUrl, counter:0, timestamp:Date.now() }
+    app.locals.urls.push(url);
+  response.json(url);
 })
 
 app.listen(app.get('port'), ()=>{
