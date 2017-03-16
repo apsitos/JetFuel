@@ -4,6 +4,9 @@ const md5 = require('md5');
 const fs = require('fs');
 const app = express();
 
+const environment = process.env.NODE_ENV || 'development';
+const configuration = require('./knexfile')[environment];
+const database = require('knex')(configuration);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -31,20 +34,20 @@ app.get('/', (request, response) => {
 })
 
 app.get('/api/folders', (request, response) => {
-  response.json(app.locals.folders);
+  database('folders').select()
+          .then((folders) => {
+            response.status(200).json(folders);
+          })
+          .catch((error) => {
+            console.error('something is wrong with the db');
+          });
 })
 
-// app.get('/api/folders/:name', (request, response) => {
-//   console.log(app.locals.urls)
-//   if(app.locals.urls.length===0){
-//     response.json(app.locals.folders);
-//   }else{
-//     response.json(app.locals.urls);
-//   }
-// })
-
 app.get('/api/folders/:id/urls', (request, response) => {
-  const urls = app.locals.urls.filter((url) => {
+  database('urls').where('folderId', request.params.id).select()
+  )
+
+  filter((url) => {
     return url.folderId == request.params.id
   })
   console.log(urls)
