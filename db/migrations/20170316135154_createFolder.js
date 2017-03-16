@@ -10,7 +10,7 @@ exports.up = function(knex, Promise) {
 
         knex.schema.createTable('urls', function(table){
             table.string('id').primary();
-            table.integer('folderId')
+            table.string('folderId')
                  .references('id')
                  .inTable('folders');
             table.string('longUrl');
