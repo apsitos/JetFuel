@@ -44,19 +44,20 @@ app.get('/api/folders', (request, response) => {
 })
 
 app.get('/api/folders/:id/urls', (request, response) => {
+  // const url ={ id, folderId, longUrl, short, clicks:0, created_at: new Date }
   database('urls').where('folderId', request.params.id)
           .then((urls) => {
+            console.log(urls);
             response.status(200).json(urls)
           })
           .catch((error) => {
-            console.error('something is wrong with the redirect');
+            console.error('something is wrong with the redirect', error);
           })
 
 })
 
 app.post('/api/folders', (request, response) => {
   const { name } = request.body;
-  const id = md5(name);
   const folder = { id, name, created_at: new Date};
 
   database('folders').insert(folder)
@@ -75,7 +76,6 @@ app.post('/api/urls', (request, response) => {
   const {folderId, longUrl } = request.body;
   const id = md5(longUrl);
   const short = id.slice(0,5)
-  console.log(short);
   const url ={ id, folderId, longUrl, short, clicks:0, created_at: new Date }
 
   database('urls').insert(url)
