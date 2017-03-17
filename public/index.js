@@ -21,17 +21,19 @@ $('.folder-list').on('click', (event) => {
 $('.shortened-links').on('click', ".shorten-url", (e) => {
   const folderId = $(".selected").attr("data-id");
   const longUrl = $('.long-url').val();
+  let id = folderId
+
   console.log("folderId", folderId);
   console.log("longUrl", longUrl);
 
   saveUrl(folderId, longUrl);
+  getUrls(id);
 })
 
 const makeFolder = (name)=> {
   axios.post('/api/folders',{
       name:name
     })
-    // console.log(name)
 }
 
 const addFolders = (name) => {
@@ -51,11 +53,9 @@ const addFolders = (name) => {
 
 const getUrls = (id) => {
 
-  // the button doenst have the correct id because it doesn't have a response
   axios.get(`/api/folders/${id}/urls`)
   .then((response) => {
     if(response.data.length === 0){
-      // console.log(response)
       $('.shortened-links').empty()
       $('.shortened-links').append(
       `<div data-id=${id}>
@@ -90,8 +90,7 @@ const saveUrl = (folderId,longUrl) => {
     folderId,
     longUrl,
   }).then((response)=>{
-    const url = response.data
       $('.url-list').append(
-        `<li>${url.longUrl}</li>`)
+        `<li>${longUrl}</li>`)
   })
 }
