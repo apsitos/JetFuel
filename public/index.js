@@ -31,10 +31,11 @@ $('.links-container').on('click', '.shorten-url', (e) => {
   getUrls(id);
 })
 
-$('.links-container').on('click', '.url', function() {
-  //if the clicked thing === the shorturl, reroute to longUrl?
-
-  window.open(`http://${this.innerHTML}`, '_blank')
+$('.links-container').on('click', '.url', (e) => {
+  console.log('short click', e.target.dataset.id);
+  const id = e.target.dataset.id
+  // const short = $(this.innerHTML)
+  getShort(id);
 })
 
 const makeFolder = (name)=> {
@@ -97,5 +98,15 @@ const saveUrl = (folderId,longUrl) => {
       $('.url-list').append(
         `<li data-id = ${id}>${short}</li>
         <p>${longUrl}</p>`)
+  })
+}
+
+const getShort = (id) => {
+  console.log(id);
+  axios.get(`/api/${id}`, {
+    id
+  }).then(response => {
+    console.log(response);
+    // window.open(`http://${this.innerHTML}`, '_blank')
   })
 }
