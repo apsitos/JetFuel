@@ -13,26 +13,30 @@ $('.create-folder').on('click', () => {
 
 $('.folder-list').on('click', (event) => {
   let id = event.target.dataset.id
-  $(".folder").each((i,folder) => {
+  $('.folder').each((i,folder) => {
     if(id == folder.dataset.id){
-      folder.classList.add("selected")
+      folder.classList.add('selected')
     } else {
-      folder.classList.remove("selected")
+      folder.classList.remove('selected')
     }
   })
   getUrls(id);
 })
 
-$('.links-container').on('click', ".shorten-url", (e) => {
-  const folderId = $(".selected").attr("data-id");
+$('.links-container').on('click', '.shorten-url', (e) => {
+  const folderId = $('.selected').attr('data-id');
   const longUrl = $('.long-url').val();
   let id = folderId
   saveUrl(folderId, longUrl);
   getUrls(id);
 })
 
-$('.links-container').on('click', '.url', function() {
+$('.links-container').on('click', '.url', (e) => {
   window.open(`http://${this.innerHTML}`, "_blank")
+  console.log('short click', e.target.dataset.id);
+  const id = e.target.dataset.id
+  // const short = $(this.innerHTML)
+  getShort(id);
 })
 
 const makeFolder = (name)=> {
@@ -47,7 +51,7 @@ const addFolders = (name) => {
     $('.folder-list').text('');
     response.data.map((folder) => {
       $('.folder-list').append(
-        `<li class="folder" data-id=${folder.id}>
+        `<li class='folder' data-id=${folder.id}>
           ${folder.name}
         </li>`
       )
@@ -79,8 +83,8 @@ const getUrls = (id) => {
      `);
      response.data.map((url) => {
        $('.url-list').append(`
-           <li data-id = ${url.id} class="url">${url.longUrl}</li>
-           <p>${url.short}</p>
+          <li data-id = ${url.id} class='url'>${url.short}</li>
+           <p>${url.longUrl}</p>
      `)})
     }
   });
@@ -92,7 +96,17 @@ const saveUrl = (folderId,longUrl) => {
     longUrl,
   }).then((response)=>{
       $('.url-list').append(
-        `<li data-id = ${id}>${longUrl}</li>
-        <p>${short}</p>`)
+        `<li data-id = ${id}>${short}</li>
+        <p>${longUrl}</p>`)
+  })
+}
+
+const getShort = (id) => {
+  console.log(id);
+  axios.get(`/api/${id}`, {
+    id
+  }).then(response => {
+    console.log(response);
+    // window.open(`http://${this.innerHTML}`, '_blank')
   })
 }
