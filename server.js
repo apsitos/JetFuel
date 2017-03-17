@@ -13,16 +13,8 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 app.set('port', process.env.PORT || 3000)
 app.locals.title = 'JetFuel'
-app.locals.folders = [{
-  id:1,
-  name:'food'
-}]
-app.locals.urls = [{
-  folderId:1,
-  longUrl:'www.foodnetwork.com',
-  id: '123e23097420984',
-  clicks:0
-}]
+app.locals.folders = []
+
 
 
 app.use(express.static('public'))
@@ -34,13 +26,14 @@ app.get('/', (request, response) => {
 })
 
 app.get('/api/folders', (request, response) => {
-  database('folders').select()
-          .then((folders) => {
-            response.status(200).json(folders);
-          })
-          .catch((error) => {
-            console.error('something is wrong with the db');
-          })
+  // database('folders').select()
+  //         .then((folders) => {
+  //           response.status(200).json(folders);
+  //         })
+  //         .catch((error) => {
+  //           console.error('something is wrong with the db');
+  //         })
+  response.status(200).json(app.locals.folders)
 })
 
 app.get('/api/folders/:id/urls', (request, response) => {
@@ -57,19 +50,21 @@ app.get('/api/folders/:id/urls', (request, response) => {
 })
 
 app.post('/api/folders', (request, response) => {
-  const { name } = request.body;
-  const folder = { id, name, created_at: new Date};
+  const name = request.body;
+  // const folder = { id, name, created_at: new Date};
+  app.locals.folders.push(name)
 
-  database('folders').insert(folder)
-    .then(() => {
-      database('folders').select()
-        .then((folders) => {
-          response.status(200).json(folders)
-        })
-        .catch((error) => {
-          console.error('something wrong with the db post');
-        })
-  })
+  // database('folders').insert(folder)
+  //   .then(() => {
+  //     database('folders').select()
+  //       .then((folders) => {
+  //         response.status(200).json(folders)
+  //       })
+  //       .catch((error) => {
+  //         console.error('something wrong with the db post');
+  //       })
+  // })
+  response.status(200).json(app.locals.folders)
 })
 
 app.post('/api/urls', (request, response) => {
