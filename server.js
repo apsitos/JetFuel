@@ -58,10 +58,11 @@ app.get('/api/folders/:id/urls', (request, response) => {
 
 app.post('/api/folders', (request, response) => {
   const { name } = request.body;
-  const folder = { id, name, created_at: new Date};
+  const folder = { name, created_at: new Date};
 
   database('folders').insert(folder)
     .then(() => {
+      console.log();
       database('folders').select()
         .then((folders) => {
           response.status(200).json(folders)
