@@ -55,10 +55,11 @@ app.get('/api/folders/:id/urls', (request, response) => {
 
 app.get('/:id', (request, response) => {
   const {id} = request.params
-  console.log(id);
   database('urls').where('id', id)
-  .then((dataObj) => { response.status(302).redirect(`${dataObj[0].longUrl}`) })
-  .catch((error) => {console.error('no redirect sent');})
+    .then((dataObj) => {
+      response.redirect(302, `${dataObj[0].longUrl}`)})
+    .catch((error) => {
+      console.error('no redirect sent');})
 })
 
 app.post('/api/folders', (request, response) => {

@@ -100,7 +100,9 @@ const saveUrl = (folderId,longUrl, id) => {
   }
 
 const getShort = (id) => {
-  axios.get(`http://${id}`, {
+  axios.get(`${id}`, {
     id
+  }).then(response => {
+    console.log(response);
   })
 }
