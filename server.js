@@ -43,7 +43,6 @@ app.get('/api/folders', (request, response) => {
 })
 
 app.get('/api/folders/:id/urls', (request, response) => {
-  // const url ={ id, folderId, longUrl, short, clicks:0, created_at: new Date }
   database('urls').where('folderId', request.params.id)
           .then((urls) => {
             response.status(200).json(urls)
@@ -68,7 +67,7 @@ app.get('/api/:id', (request, response) => {
 
 app.post('/api/folders', (request, response) => {
   const { name } = request.body;
-  const folder = { id, name, created_at: new Date};
+  const folder = { name, created_at: new Date};
 
   database('folders').insert(folder)
     .then(() => {

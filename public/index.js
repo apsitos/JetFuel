@@ -32,6 +32,7 @@ $('.links-container').on('click', '.shorten-url', (e) => {
 })
 
 $('.links-container').on('click', '.url', (e) => {
+  window.open(`http://${this.innerHTML}`, "_blank")
   console.log('short click', e.target.dataset.id);
   const id = e.target.dataset.id
   // const short = $(this.innerHTML)
@@ -47,7 +48,6 @@ const makeFolder = (name)=> {
 const addFolders = (name) => {
   axios.get('/api/folders')
   .then((response) => {
-    console.log(response.data)
     $('.folder-list').text('');
     response.data.map((folder) => {
       $('.folder-list').append(
