@@ -26,14 +26,13 @@ app.get('/', (request, response) => {
 })
 
 app.get('/api/folders', (request, response) => {
-  // database('folders').select()
-  //         .then((folders) => {
-  //           response.status(200).json(folders);
-  //         })
-  //         .catch((error) => {
-  //           console.error('something is wrong with the db');
-  //         })
-  response.status(200).json(app.locals.folders)
+  database('folders').select()
+          .then((folders) => {
+            response.status(200).json(folders);
+          })
+          .catch((error) => {
+            console.error('something is wrong with the db');
+          })
 })
 
 app.get('/api/folders/:id/urls', (request, response) => {
@@ -50,21 +49,20 @@ app.get('/api/folders/:id/urls', (request, response) => {
 })
 
 app.post('/api/folders', (request, response) => {
-  const name = request.body;
-  // const folder = { id, name, created_at: new Date};
+  const {name} = request.body;
+  const folder = { id, name, created_at: new Date};
   app.locals.folders.push(name)
 
-  // database('folders').insert(folder)
-  //   .then(() => {
-  //     database('folders').select()
-  //       .then((folders) => {
-  //         response.status(200).json(folders)
-  //       })
-  //       .catch((error) => {
-  //         console.error('something wrong with the db post');
-  //       })
-  // })
-  response.status(200).json(app.locals.folders)
+  database('folders').insert(folder)
+    .then(() => {
+      database('folders').select()
+        .then((folders) => {
+          response.status(200).json(folders)
+        })
+        .catch((error) => {
+          console.error('something wrong with the db post');
+        })
+  })
 })
 
 app.post('/api/urls', (request, response) => {

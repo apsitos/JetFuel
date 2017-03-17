@@ -1,3 +1,7 @@
+process.env.NODE_ENV = 'test'
+const config = require('../knexfile.js')['test']
+const knex = require('knex')(config)
+
 const chai = require('chai');
 const expect = chai.expect;
 const app = require('../server.js')
@@ -24,6 +28,26 @@ describe('Server', () => {
   });
 
   describe('GET /api/folders', ()=>{
+    beforeEach(function(done) {
+      const folders = [{name:'food', id:1},
+    {name:'animals', id:2}]
+    knex.migrate.rollback()
+    .then(function() {
+      knex.migrate.latest()
+      .then(function() {
+        knex('folders').insert(folders)
+        .then(function() {
+          done();
+        });
+      });
+    });
+  });
+  afterEach((done)=>{
+    knex.migrate.rollback()
+    .then(()=>{
+      done()
+    })
+  })
     it('should return all folders',(done)=>{
       chai.request(app)
       .get('/api/folders')
@@ -37,20 +61,31 @@ describe('Server', () => {
     })
   })
   describe('POST /api/folders', ()=>{
-    beforeEach((done)=>{
-      const folders = [{name:'food'},
-      {name:'shoes'}]
-      app.locals.folders = folders
+    beforeEach(function(done) {
+      const folders = [{name:'food', id:1},
+    {name:'animals', id:2}]
+    knex.migrate.rollback()
+    .then(function() {
+      knex.migrate.latest()
+      .then(function() {
+        knex('folders').insert(folders)
+        .then(function() {
+          done();
+        });
+      });
+    });
+  });
+  afterEach((done)=>{
+    knex.migrate.rollback()
+    .then(()=>{
       done()
     })
-    afterEach((done)=>{
-      app.locals.folders = []
-      done()
-    })
+  })
+
     it('should add a folder to the array',(done)=>{
       chai.request(app)
       .post('/api/folders')
-      .send({ name:'animals'})
+      .send({ name:'music', id:3})
       .end((err,res)=>{
         if(err){done(err);}
         expect(res).to.have.status(200)
