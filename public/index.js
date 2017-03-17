@@ -8,6 +8,7 @@ $(document).ready((name) => {
 $('.create-folder').on('click', () => {
   let name = folders.val();
   makeFolder(name)
+  console.log('add folders');
   addFolders(name);
 })
 
@@ -32,7 +33,7 @@ $('.links-container').on('click', ".shorten-url", (e) => {
 })
 
 $('.links-container').on('click', '.url', function() {
-  console.log(this.attr('data-id'));
+  // console.log(this.attr('data-id'));
   window.open(`http://${this.innerHTML}`, "_blank")
 })
 
