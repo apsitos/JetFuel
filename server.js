@@ -24,7 +24,6 @@ app.locals.urls = [{
   clicks:0
 }]
 
-
 app.use(express.static('public'))
 
 app.get('/', (request, response) => {
@@ -52,6 +51,18 @@ app.get('/api/folders/:id/urls', (request, response) => {
             console.error('something is wrong with the redirect', error);
           })
 
+})
+
+app.get('/api/:id', (request, response) => {
+  // const url = database('urls').find(folder =>  folder.shortURL === request.params.short)
+  const {id} = request.params
+  console.log(id);
+  database('urls').where('id', id)
+          .then((url) => {
+            console.log(url);
+          })
+
+  .then((url) =>{ response.send(url[longUrl])})
 })
 
 app.post('/api/folders', (request, response) => {
