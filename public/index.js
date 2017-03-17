@@ -33,7 +33,7 @@ $('.links-container').on('click', '.shorten-url', (e) => {
 
 $('.links-container').on('click', '.url', (e) => {
   window.open(`http://${this.innerHTML}`, "_blank")
-  console.log('short click', e.target.dataset.id);
+  // console.log('short click', e.target.dataset.id);
   const id = e.target.dataset.id
   // const short = $(this.innerHTML)
   getShort(id);
@@ -100,11 +100,7 @@ const saveUrl = (folderId,longUrl, id) => {
   }
 
 const getShort = (id) => {
-  console.log(id);
-  axios.get(`/api/${id}`, {
+  axios.get(`http://${id}`, {
     id
-  }).then(response => {
-    console.log(response);
-    // window.open(`http://${this.innerHTML}`, '_blank')
   })
 }

@@ -53,16 +53,12 @@ app.get('/api/folders/:id/urls', (request, response) => {
 
 })
 
-app.get('/api/:id', (request, response) => {
-  // const url = database('urls').find(folder =>  folder.shortURL === request.params.short)
+app.get('/:id', (request, response) => {
   const {id} = request.params
   console.log(id);
   database('urls').where('id', id)
-          .then((url) => {
-            console.log(url);
-          })
-
-  .then((url) =>{ response.send(url[longUrl])})
+  .then((dataObj) => { response.status(302).redirect(`${dataObj[0].longUrl}`) })
+  .catch((error) => {console.error('no redirect sent');})
 })
 
 app.post('/api/folders', (request, response) => {
