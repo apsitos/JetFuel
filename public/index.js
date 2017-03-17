@@ -13,21 +13,27 @@ $('.create-folder').on('click', () => {
 
 $('.folder-list').on('click', (event) => {
   let id = event.target.dataset.id
-  console.log(id)
-  $(event.target).closest('li').toggleClass('selected')
+  $(".folder").each((i,folder) => {
+    if(id == folder.dataset.id){
+      folder.classList.add("selected")
+    } else {
+      folder.classList.remove("selected")
+    }
+  })
   getUrls(id);
 })
 
-$('.shortened-links').on('click', ".shorten-url", (e) => {
+$('.links-container').on('click', ".shorten-url", (e) => {
   const folderId = $(".selected").attr("data-id");
   const longUrl = $('.long-url').val();
   let id = folderId
-
-  console.log("folderId", folderId);
-  console.log("longUrl", longUrl);
-
   saveUrl(folderId, longUrl);
   getUrls(id);
+})
+
+$('.links-container').on('click', '.url', function() {
+  console.log(this.attr('data-id'));
+  window.open(`http://${this.innerHTML}`, "_blank")
 })
 
 const makeFolder = (name)=> {
@@ -43,7 +49,7 @@ const addFolders = (name) => {
     $('.folder-list').text('');
     response.data.map((folder) => {
       $('.folder-list').append(
-        `<li data-id=${folder.id}>
+        `<li class="folder" data-id=${folder.id}>
           ${folder.name}
         </li>`
       )
@@ -52,45 +58,43 @@ const addFolders = (name) => {
 }
 
 const getUrls = (id) => {
-
   axios.get(`/api/folders/${id}/urls`)
   .then((response) => {
     if(response.data.length === 0){
-      $('.shortened-links').empty()
-      $('.shortened-links').append(
+      $('.links-container').empty()
+      $('.links-container').append(
       `<div data-id=${id}>
         <input class = 'long-url' type='text' placeholder='shorten a url' />
         <button class='shorten-url' type='button'>Submit</button>
         <ul class= 'url-list'></ul>
       </div>`
       )
-
-    }else{
-      console.log(response)
-      $('.shortened-links').text('');
-     $('.shortened-links').empty();
-     $('.shortened-links').append(`
-       <input class = 'long-url' type='text' placeholder='shorten a url' />
-       <button class='shorten-url' type='button'>Submit</button>
-       <div data-id = ${id}>
-         <ul class='url-list'></ul>
-       </div>
+    } else {
+      $('.links-container').text('');
+      $('.links-container').empty();
+      $('.links-container').append(`
+        <input class = 'long-url' type='text' placeholder='shorten a url' />
+        <button class='shorten-url' type='button'>Submit</button>
+        <div data-id = ${id}>
+          <ul class='url-list'></ul>
+        </div>
      `);
      response.data.map((url) => {
        $('.url-list').append(`
-           <li data-id = ${url.id}>${url.longUrl}</li>
+           <li data-id = ${url.id} class="url">${url.longUrl}</li>
+           <p>${url.short}</p>
      `)})
     }
   });
 }
 
 const saveUrl = (folderId,longUrl) => {
-
   axios.post('/api/urls', {
     folderId,
     longUrl,
   }).then((response)=>{
       $('.url-list').append(
-        `<li>${longUrl}</li>`)
+        `<li data-id = ${id}>${longUrl}</li>
+        <p>${short}</p>`)
   })
 }

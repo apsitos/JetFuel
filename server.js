@@ -93,26 +93,3 @@ app.post('/api/urls', (request, response) => {
 app.listen(app.get('port'), ()=>{
   console.log(`${app.locals.title} is running at ${app.get('port')}`)
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-app.post('api/folders/:id', (request, response) => {
-  const { id } = request.params;
-  const { url } = request.body;
-  app.locals.urls.push({ id, url });
-  response.json({ id, url });
-})
