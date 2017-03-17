@@ -8,7 +8,6 @@ $(document).ready((name) => {
 $('.create-folder').on('click', () => {
   let name = folders.val();
   makeFolder(name)
-  console.log('add folders');
   addFolders(name);
 })
 
@@ -33,7 +32,6 @@ $('.links-container').on('click', ".shorten-url", (e) => {
 })
 
 $('.links-container').on('click', '.url', function() {
-  // console.log(this.attr('data-id'));
   window.open(`http://${this.innerHTML}`, "_blank")
 })
 
@@ -46,7 +44,6 @@ const makeFolder = (name)=> {
 const addFolders = (name) => {
   axios.get('/api/folders')
   .then((response) => {
-    console.log(response.data)
     $('.folder-list').text('');
     response.data.map((folder) => {
       $('.folder-list').append(
