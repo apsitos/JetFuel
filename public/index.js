@@ -64,8 +64,8 @@ const getUrls = (id) => {
       $('.links-container').empty()
       $('.links-container').append(
       `<div data-id=${id}>
+      <button class='shorten-url' type='button'>Submit</button>
         <input class = 'long-url' type='text' placeholder='shorten a url' />
-        <button class='shorten-url' type='button'>Submit</button>
         <ul class= 'url-list'></ul>
       </div>`
       )
