@@ -32,7 +32,7 @@ $('.links-container').on('click', ".shorten-url", (e) => {
 })
 
 $('.links-container').on('click', '.url', function() {
-  console.log(this.attr('data-id'));
+  // console.log(this.attr('data-id'));
   window.open(`http://${this.innerHTML}`, "_blank")
 })
 
