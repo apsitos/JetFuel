@@ -6,6 +6,7 @@ exports.seed = function(knex, Promise) {
         id: 123,
         folderId: 1,
         longUrl: 'www.fodors.com',
+        short: 'trip',
         clicks: 0,
         created_at: new Date
       }),
@@ -13,6 +14,7 @@ exports.seed = function(knex, Promise) {
         id: 456,
         folderId: 2,
         longUrl: 'www.animalplanet.com',
+        short: 'ap',
         clicks: 0,
         created_at: new Date
       }),
@@ -20,6 +22,7 @@ exports.seed = function(knex, Promise) {
         id: 789,
         folderId: 1,
         longUrl: 'www.washingtonpost.com',
+        short: 'wapo',
         clicks: 0,
         created_at: new Date
       })
