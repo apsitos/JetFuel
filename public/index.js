@@ -27,7 +27,7 @@ $('.links-container').on('click', ".shorten-url", (e) => {
   const folderId = $(".selected").attr("data-id");
   const longUrl = $('.long-url').val();
   let id = folderId
-  saveUrl(folderId, longUrl);
+  saveUrl(folderId, longUrl, id);
   getUrls(id);
 })
 
@@ -61,7 +61,7 @@ const getUrls = (id) => {
     if(response.data.length === 0){
       $('.links-container').empty()
       $('.links-container').append(
-      `<div data-id=${id}>
+      `<div data-id=${response.id}>
         <input class = 'long-url' type='text' placeholder='shorten a url' />
         <button class='shorten-url' type='button'>Submit</button>
         <ul class= 'url-list'></ul>
@@ -73,7 +73,7 @@ const getUrls = (id) => {
       $('.links-container').append(`
         <input class = 'long-url' type='text' placeholder='shorten a url' />
         <button class='shorten-url' type='button'>Submit</button>
-        <div data-id = ${id}>
+        <div data-id = ${response.id}>
           <ul class='url-list'></ul>
         </div>
      `);
@@ -86,13 +86,11 @@ const getUrls = (id) => {
   });
 }
 
-const saveUrl = (folderId,longUrl) => {
+const saveUrl = (folderId,longUrl, id) => {
   axios.post('/api/urls', {
     folderId,
     longUrl,
   }).then((response)=>{
-      $('.url-list').append(
-        `<li data-id = ${id}>${longUrl}</li>
-        <p>${short}</p>`)
-  })
-}
+    getUrls(id);
+    })
+  }
