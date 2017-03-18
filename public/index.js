@@ -32,11 +32,11 @@ $('.links-container').on('click', '.shorten-url', (e) => {
 })
 
 $('.links-container').on('click', '.url', (e) => {
-  window.open(`http://${this.innerHTML}`, "_blank")
-  // console.log('short click', e.target.dataset.id);
+  console.log('short click', e.target.dataset.id);
   const id = e.target.dataset.id
   // const short = $(this.innerHTML)
   getShort(id);
+  window.open(`${this.innerHTML}`, "_blank")
 })
 
 const makeFolder = (name)=> {
@@ -100,7 +100,7 @@ const saveUrl = (folderId,longUrl, id) => {
   }
 
 const getShort = (id) => {
-  axios.get(`${id}`, {
+  axios.get(`/api/${id}`, {
     id
   }).then(response => {
     console.log(response);
