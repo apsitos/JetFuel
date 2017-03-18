@@ -4,13 +4,14 @@ $(document).ready(() => {
   addFolders();
 });
 
-
+//saves new folder to db and appends to page
 $('.create-folder').on('click', () => {
   let name = folders.val();
   makeFolder(name)
   addFolders();
 })
 
+//highlights the selected folder
 $('.folder-list').on('click', (event) => {
   let id = event.target.dataset.id
   $('.folder').each((i,folder) => {
@@ -23,14 +24,17 @@ $('.folder-list').on('click', (event) => {
   getUrls(id);
 })
 
+//saves user-entered URL to db
 $('.links-container').on('click', '.shorten-url', (e) => {
   const folderId = $('.selected').attr('data-id');
-  const longUrl = $('.long-url').val();
+  const url = $('.long-url').val();
+  const longUrl = validateUrl(url);
   let id = folderId
   saveUrl(folderId, longUrl, id);
   getUrls(id);
 })
 
+//redirects user
 $('.links-container').on('click', '.url', (e) => {
   console.log('short click', e.target.dataset.id);
   const id = e.target.dataset.id
