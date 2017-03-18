@@ -56,12 +56,13 @@ app.get('/api/folders/:id/urls', (request, response) => {
 app.get('/api/:id', (request, response) => {
   const {id} = request.params
   console.log(id);
-  database('urls').where('id', id)
+  database('urls').where('id', id).select()
     .then((dataObj) => {
-      response.redirect(`http://${dataObj[0].longUrl}`)
+      // console.log(dataObj[0].longUrl);
+      response.redirect(dataObj.longUrl)
   })
     .catch((error) => {
-      console.error('no redirect sent');
+      console.error('no redirect sent', error);
   })
 })
 

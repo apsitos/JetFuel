@@ -1,14 +1,14 @@
 const folders = $('.folder-name');
 
-
-$(document).ready((name) => {
-  addFolders(name);
+$(document).ready(() => {
+  addFolders();
 });
+
 
 $('.create-folder').on('click', () => {
   let name = folders.val();
   makeFolder(name)
-  addFolders(name);
+  addFolders();
 })
 
 $('.folder-list').on('click', (event) => {
@@ -45,9 +45,10 @@ const makeFolder = (name)=> {
     })
 }
 
-const addFolders = (name) => {
+const addFolders = () => {
   axios.get('/api/folders')
   .then((response) => {
+    console.log(response);
     $('.folder-list').text('');
     response.data.map((folder) => {
       $('.folder-list').append(
@@ -88,6 +89,14 @@ const getUrls = (id) => {
      `)})
     }
   });
+}
+
+const validateUrl = (url) => {
+  const urlRegex = /^(http|https)?:\/\/[w]{2,4}[a-zA-Z0-9-\.]+\.[a-z]{1,10}/
+  if(!urlRegex.test(url)){
+    url = 'http://' + url
+  }
+  return url;
 }
 
 const saveUrl = (folderId,longUrl, id) => {
