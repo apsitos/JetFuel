@@ -117,7 +117,7 @@ const addCount = (clicks) => {
   ++clicks;
 }
 
-const getShort = (id, clicks) => {
+const getShort = (id) => {
   axios.get(`/${id}`, {
     id
   })
