@@ -88,9 +88,11 @@ const getUrls = (id) => {
      response.data.map((url) => {
        console.log(url);
        $('.url-list').append(`
-          <li data-id = ${url.id} class='url'>${url.short}  Visited ${url.clicks} times</li>
-           <p>Saved on ${url.created_at}</p>
+         <a href= ${url.longUrl}>
+          <li data-id = ${url.id} class='url'>${url.short}  </li>
+           <p>Visited ${url.clicks} times Saved on ${url.created_at}</p>
            <p>${url.longUrl}</p>
+         </a>
      `)})
     }
   });
