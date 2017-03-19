@@ -77,7 +77,7 @@ describe('Server', () => {
   afterEach((done)=>{
     knex.migrate.rollback()
     .then(()=>{
-      done()
+      done();
     })
   })
     it('should return all urls that belong to an ID',(done)=>{
@@ -88,7 +88,7 @@ describe('Server', () => {
         expect(res).to.have.status(200)
         expect(res).to.be.json
         expect(res.body).to.be.a('array')
-        done()
+        done();
       })
     })
   })
@@ -125,6 +125,7 @@ describe('Server', () => {
       .end((err,res)=>{
         if(err){ done(err) }
         expect(res).to.have.status(200)
+        done();
       })
     })
   })
@@ -144,20 +145,17 @@ describe('Server', () => {
   afterEach((done)=>{
     knex.migrate.rollback()
     .then(()=>{
-      done()
+      done();
     })
   })
-    it('should add a folder to the array',(done)=>{
+    it('should add a folder to the array',()=>{
       chai.request(app)
       .post('/api/folders')
       .send({
-         id:3,
-         name:'Music',
-         created_at: new Date })
+         name:'Music'})
       .end((err,res)=>{
         if(err){done(err);}
         expect(res).to.have.status(200)
-        expect(res).to.be.json
         done()
       })
     })

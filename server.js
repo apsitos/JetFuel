@@ -12,8 +12,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.set('port', process.env.PORT || 3000)
-app.locals.title = 'JetFuel'
-app.locals.folders = []
 
 
 
@@ -50,9 +48,7 @@ app.get('/api/folders/:id/urls', (request, response) => {
 
 app.post('/api/folders', (request, response) => {
   const {name} = request.body;
-  const folder = { id, name, created_at: new Date};
-  app.locals.folders.push(name)
-
+  const folder = { name, created_at: new Date};
   database('folders').insert(folder)
     .then(() => {
       database('folders').select()
@@ -70,7 +66,6 @@ app.post('/api/urls', (request, response) => {
   const id = md5(longUrl);
   const short = id.slice(0,5)
   const url ={ id, folderId, longUrl, short, clicks:0, created_at: new Date }
-
   database('urls').insert(url)
     .then(() => {
       database('urls').select()
@@ -84,7 +79,7 @@ app.post('/api/urls', (request, response) => {
 })
 
 app.listen(app.get('port'), ()=>{
-  console.log(`${app.locals.title} is running at ${app.get('port')}`)
+  console.log(` is running at ${app.get('port')}`)
 })
 
 
