@@ -41,7 +41,8 @@ $('.links-container').on('click', '.url', (e) => {
 })
 
 //sort by Popularity
-$('.links-container').on('click', '.popular', (e) => {
+$('.links-container').on('click', (e) => {
+  console.log(e.target);
   const id = e.target.id
   console.log('click pop', id);
   sortPopularity(id)
@@ -143,5 +144,6 @@ const sortPopularity = (id) => {
   console.log('sort by blonde', id);
   axios.get(`/api/folders/${id}/mostPopular`, {
     id
-  }).then(response => getUrls(response))
+  }).then(response => response.json)
+  .then(response => getUrls(response))
 }
