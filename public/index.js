@@ -36,9 +36,7 @@ $('.links-container').on('click', '.shorten-url', (e) => {
 
 //redirects user
 $('.links-container').on('click', '.url', (e) => {
-  console.log('short click', e.target.dataset.id);
   const id = e.target.dataset.id
-  // const short = $(this.innerHTML)
   getShort(id);
 })
 
@@ -86,12 +84,14 @@ const getUrls = (id) => {
         </div>
      `);
      response.data.map((url) => {
-       console.log(url);
        $('.url-list').append(`
-          <li data-id = ${url.id} class='url'>${url.short}  Visited ${url.clicks} times</li>
-           <p>Saved on ${url.created_at}</p>
-           <p>${url.longUrl}</p>
-     `)})
+        <a href= ${url.longUrl} target='_blank' onclick='addCount(${url.clicks})' >
+          <li data-id = ${url.id} class='url'>${url.short}</li>
+        </a>
+        <p>Visited ${url.clicks} times</p>
+        <p class='date'>Saved on ${url.created_at}</p>
+        <p>${url.longUrl}</p>`
+     )})
     }
   });
 }
@@ -110,8 +110,12 @@ const saveUrl = (folderId,longUrl, id) => {
     longUrl,
   }).then((response)=>{
     getUrls(id);
-    })
-  }
+  })
+}
+
+const addCount = (clicks) => {
+  ++clicks;
+}
 
 const getShort = (id) => {
   axios.get(`/${id}`, {
