@@ -40,7 +40,6 @@ $('.links-container').on('click', '.url', (e) => {
   const id = e.target.dataset.id
   // const short = $(this.innerHTML)
   getShort(id);
-  window.open(`${this.innerHTML}`, "_blank")
 })
 
 const makeFolder = (name)=> {
@@ -113,9 +112,7 @@ const saveUrl = (folderId,longUrl, id) => {
   }
 
 const getShort = (id) => {
-  axios.get(`/api/${id}`, {
+  axios.get(`/${id}`, {
     id
-  }).then(response => {
-    console.log(response);
   })
 }
