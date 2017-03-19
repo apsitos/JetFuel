@@ -27,7 +27,7 @@ $('.links-container').on('click', ".shorten-url", (e) => {
   const folderId = $(".selected").attr("data-id");
   const longUrl = $('.long-url').val();
   let id = folderId
-  saveUrl(folderId, longUrl);
+  saveUrl(folderId, longUrl );
   getUrls(id);
 })
 

@@ -6,6 +6,8 @@ const chai = require('chai');
 const expect = chai.expect;
 const app = require('../server.js')
 const chaiHttp = require('chai-http');
+const configuration = require('../knexfile')['test'];
+const database = require('knex')(configuration);
 
 chai.use(chaiHttp);
 
@@ -29,13 +31,11 @@ describe('Server', () => {
 
   describe('GET /api/folders', ()=>{
     beforeEach(function(done) {
-      const folders = [{name:'food', id:1},
-    {name:'animals', id:2}]
     knex.migrate.rollback()
     .then(function() {
       knex.migrate.latest()
       .then(function() {
-        knex('folders').insert(folders)
+        return database.seed.run()
         .then(function() {
           done();
         });
@@ -56,19 +56,18 @@ describe('Server', () => {
         expect(res).to.have.status(200)
         expect(res).to.be.json
         expect(res.body).to.be.a('array')
+        expect(res.body).to.have.length(2)
         done()
       })
     })
   })
-  describe('POST /api/folders', ()=>{
+  describe('GET /api/folders/:id/urls',()=>{
     beforeEach(function(done) {
-      const folders = [{name:'food', id:1},
-    {name:'animals', id:2}]
     knex.migrate.rollback()
     .then(function() {
       knex.migrate.latest()
       .then(function() {
-        knex('folders').insert(folders)
+        return database.seed.run()
         .then(function() {
           done();
         });
@@ -81,42 +80,87 @@ describe('Server', () => {
       done()
     })
   })
-
-    it('should add a folder to the array',(done)=>{
+    it('should return all urls that belong to an ID',(done)=>{
       chai.request(app)
-      .post('/api/folders')
-      .send({ name:'music', id:3})
+      .get('/api/folders/1/urls')
       .end((err,res)=>{
-        if(err){done(err);}
+        if(err) {done(err)}
         expect(res).to.have.status(200)
         expect(res).to.be.json
         expect(res.body).to.be.a('array')
-        expect(res.body.length).to.equal(3)
         done()
       })
     })
   })
-  // describe('GET /api/folders/:id/urls',()=>{
-  //   it('should return all urls that belong to an ID',(done)=>{
-  //     chai.request(app)
-  //     .get('/api/folders/1/urls')
-  //     .end((err,res)=>{
-  //       if(err) {done(err)}
-  //       expect(res).to.have.status(200)
-  //       expect(res).to.be.json
-  //       expect(res.body).to.be.a('object')
-  //       done()
-  //     })
-  //   })
-  // })
-  // describe('POST /api/urls',()=>{
-  //   it('should add a url to the url array',(done)=>{
-  //     chai.request(app)
-  //     .post('/api/urls')
-  //     .end((err,res)=>{
-  //       if(err){ done(err) }
-  //       expect(res).to.have.status(200)
-  //     })
-  //   })
-  // })
+  describe('POST /api/urls',()=>{
+    beforeEach(function(done) {
+    knex.migrate.rollback()
+    .then(function() {
+      knex.migrate.latest()
+      .then(function() {
+        return database.seed.run()
+        .then(function() {
+          done();
+        });
+      });
+    });
+  });
+  afterEach((done)=>{
+    knex.migrate.rollback()
+    .then(()=>{
+      done()
+    })
+  })
+    it('should add a url to the url array',(done)=>{
+      chai.request(app)
+      .post('/api/urls')
+      .send({
+        id: 123,
+        folderId: 1,
+        short:'goo.gle',
+        longUrl: 'www.google.com',
+        clicks: 0,
+        created_at: new Date
+      })
+      .end((err,res)=>{
+        if(err){ done(err) }
+        expect(res).to.have.status(200)
+      })
+    })
+  })
+  describe('POST /api/folders', ()=>{
+    beforeEach(function(done) {
+    knex.migrate.rollback()
+    .then(function() {
+      knex.migrate.latest()
+      .then(function() {
+        return database.seed.run()
+        .then(function() {
+          done();
+        });
+      });
+    });
+  });
+  afterEach((done)=>{
+    knex.migrate.rollback()
+    .then(()=>{
+      done()
+    })
+  })
+    it('should add a folder to the array',(done)=>{
+      chai.request(app)
+      .post('/api/folders')
+      .send({
+         id:3,
+         name:'Music',
+         created_at: new Date })
+      .end((err,res)=>{
+        if(err){done(err);}
+        expect(res).to.have.status(200)
+        expect(res).to.be.json
+        done()
+      })
+    })
+  })
+
 });
