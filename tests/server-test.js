@@ -142,7 +142,7 @@ describe('Server', () => {
       });
     });
   });
-  afterEach((done)=>{
+  afterEach(()=>{
     knex.migrate.rollback()
     .then(()=>{
       done();
@@ -156,7 +156,7 @@ describe('Server', () => {
       .end((err,res)=>{
         if(err){done(err);}
         expect(res).to.have.status(200)
-        done()
+        done();
       })
     })
   })
