@@ -59,8 +59,8 @@ app.get('/:id', (request, response) => {
     return
   }
   console.log(id);
-  // database('urls').where('id', id).increment('clicks', 1)
-  // .then(function() {
+  database('urls').where('id', id).increment('clicks', 1)
+  .then(function() {
     database('urls').where('id', id).select('longUrl')
     .then((dataObj) => {
       // console.log(dataObj[0].longUrl);
@@ -70,7 +70,7 @@ app.get('/:id', (request, response) => {
     .catch((error) => {
       console.error('no redirect sent', error);
     })
-  // })
+  })
 })
 
 app.post('/api/folders', (request, response) => {
