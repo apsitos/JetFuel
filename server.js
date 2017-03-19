@@ -53,6 +53,15 @@ app.get('/api/folders/:id/urls', (request, response) => {
 
 })
 
+app.get('/api/folders/:id/mostPopular', (request, response) => {
+  database('urls').where('folderId', request.params.id).select().orderBy('clicks', 'desc')
+  .then(urls => {
+    console.log(urls)
+    response.status(200).json(urls);
+  })
+  .catch(error => console.error('no sorting!', error))
+})
+
 app.get('/:id', (request, response) => {
   const { id } = request.params
   if (id === 'favicon.ico') {
@@ -67,11 +76,13 @@ app.get('/:id', (request, response) => {
       if(dataObj[0].longUrl=== `http://www.foodnetwork.com`)
       {response.redirect(`http://www.foodnetwork.com`)}
     })
+    // response.redirect(302, dataObj[0].longUrl)
     .catch((error) => {
       console.error('no redirect sent', error);
     })
   })
 })
+
 
 app.post('/api/folders', (request, response) => {
   const { name } = request.body;

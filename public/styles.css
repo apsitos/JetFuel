@@ -27,7 +27,7 @@ h1 {
   outline-color: rebeccapurple;
 }
 
-.create-folder, .shorten-url {
+button {
   font-family: Georgia;
   font-size: 26px;
   width: 152px;
