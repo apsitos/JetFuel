@@ -55,15 +55,22 @@ app.get('/api/folders/:id/urls', (request, response) => {
 
 app.get('/:id', (request, response) => {
   const { id } = request.params
+  if (id === 'favicon.ico') {
+    return
+  }
   console.log(id);
-  database('urls').where('id', id).select('longUrl')
+  // database('urls').where('id', id).increment('clicks', 1)
+  // .then(function() {
+    database('urls').where('id', id).select('longUrl')
     .then((dataObj) => {
       // console.log(dataObj[0].longUrl);
-      response.redirect(303, dataObj[0].longUrl)
-  })
+      if(dataObj[0].longUrl=== `http://www.foodnetwork.com`)
+      {response.redirect(`http://www.foodnetwork.com`)}
+    })
     .catch((error) => {
       console.error('no redirect sent', error);
-  })
+    })
+  // })
 })
 
 app.post('/api/folders', (request, response) => {
