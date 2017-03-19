@@ -50,6 +50,11 @@ h1 {
 
 .url-list {
   font-family: Georgia;
-  font-size: 22px;
+  font-size: 20px;
+  line-height: .5;
   color: darkslategrey;
+}
+
+a:link {
+  text-decoration: none;
 }
