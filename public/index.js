@@ -1,16 +1,17 @@
 const folders = $('.folder-name');
 
-
-$(document).ready((name) => {
-  addFolders(name);
+$(document).ready(() => {
+  addFolders();
 });
 
+//saves new folder to db and appends to page
 $('.create-folder').on('click', () => {
   let name = folders.val();
   makeFolder(name)
-  addFolders(name);
+  addFolders();
 })
 
+//highlights the selected folder
 $('.folder-list').on('click', (event) => {
   let id = event.target.dataset.id
   $('.folder').each((i,folder) => {
@@ -23,16 +24,18 @@ $('.folder-list').on('click', (event) => {
   getUrls(id);
 })
 
+//saves user-entered URL to db
 $('.links-container').on('click', '.shorten-url', (e) => {
   const folderId = $('.selected').attr('data-id');
-  const longUrl = $('.long-url').val();
+  const url = $('.long-url').val();
+  const longUrl = validateUrl(url).trim();
   let id = folderId
   saveUrl(folderId, longUrl, id);
   getUrls(id);
 })
 
+//redirects user
 $('.links-container').on('click', '.url', (e) => {
-  window.open(`http://${this.innerHTML}`, "_blank")
   console.log('short click', e.target.dataset.id);
   const id = e.target.dataset.id
   // const short = $(this.innerHTML)
@@ -45,9 +48,10 @@ const makeFolder = (name)=> {
     })
 }
 
-const addFolders = (name) => {
+const addFolders = () => {
   axios.get('/api/folders')
   .then((response) => {
+    console.log(response);
     $('.folder-list').text('');
     response.data.map((folder) => {
       $('.folder-list').append(
@@ -82,12 +86,22 @@ const getUrls = (id) => {
         </div>
      `);
      response.data.map((url) => {
+       console.log(url);
        $('.url-list').append(`
-          <li data-id = ${url.id} class='url'>${url.short}</li>
+          <li data-id = ${url.id} class='url'>${url.short}  Visited ${url.clicks} times</li>
+           <p>Saved on ${url.created_at}</p>
            <p>${url.longUrl}</p>
      `)})
     }
   });
+}
+
+const validateUrl = (url) => {
+  const urlRegex = /^(http|https)?:\/\/[w]{2,4}[a-zA-Z0-9-\.]+\.[a-z]{1,10}/
+  if(!urlRegex.test(url)){
+    url = 'http://' + url
+  }
+  return url;
 }
 
 const saveUrl = (folderId,longUrl, id) => {
@@ -100,11 +114,7 @@ const saveUrl = (folderId,longUrl, id) => {
   }
 
 const getShort = (id) => {
-  console.log(id);
-  axios.get(`/api/${id}`, {
+  axios.get(`/${id}`, {
     id
-  }).then(response => {
-    console.log(response);
-    // window.open(`http://${this.innerHTML}`, '_blank')
   })
 }

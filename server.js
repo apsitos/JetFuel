@@ -44,25 +44,26 @@ app.get('/api/folders', (request, response) => {
 
 app.get('/api/folders/:id/urls', (request, response) => {
   database('urls').where('folderId', request.params.id)
-          .then((urls) => {
-            response.status(200).json(urls)
-          })
-          .catch((error) => {
-            console.error('something is wrong with the redirect', error);
-          })
+    .then((urls) => {
+      response.status(200).json(urls)
+    })
+    .catch((error) => {
+      console.error('something is wrong with the redirect', error);
+    })
 
 })
 
-app.get('/api/:id', (request, response) => {
-  // const url = database('urls').find(folder =>  folder.shortURL === request.params.short)
-  const {id} = request.params
+app.get('/:id', (request, response) => {
+  const { id } = request.params
   console.log(id);
-  database('urls').where('id', id)
-          .then((url) => {
-            console.log(url);
-          })
-
-  .then((url) =>{ response.send(url[longUrl])})
+  database('urls').where('id', id).select('longUrl')
+    .then((dataObj) => {
+      // console.log(dataObj[0].longUrl);
+      response.redirect(303, dataObj[0].longUrl)
+  })
+    .catch((error) => {
+      console.error('no redirect sent', error);
+  })
 })
 
 app.post('/api/folders', (request, response) => {
