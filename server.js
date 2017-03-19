@@ -56,7 +56,7 @@ app.get('/api/folders/:id/urls', (request, response) => {
 app.get('/:id', (request, response) => {
   const { id } = request.params
   console.log(id);
-  database('urls').where('id', id).select()
+  database('urls').where('id', id).select('longUrl')
     .then((dataObj) => {
       // console.log(dataObj[0].longUrl);
       response.redirect(303, dataObj[0].longUrl)

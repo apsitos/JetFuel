@@ -28,7 +28,7 @@ $('.folder-list').on('click', (event) => {
 $('.links-container').on('click', '.shorten-url', (e) => {
   const folderId = $('.selected').attr('data-id');
   const url = $('.long-url').val();
-  const longUrl = validateUrl(url);
+  const longUrl = validateUrl(url).trim();
   let id = folderId
   saveUrl(folderId, longUrl, id);
   getUrls(id);
@@ -86,8 +86,10 @@ const getUrls = (id) => {
         </div>
      `);
      response.data.map((url) => {
+       console.log(url);
        $('.url-list').append(`
-          <li data-id = ${url.id} class='url'>${url.short}</li>
+          <li data-id = ${url.id} class='url'>${url.short}  Visited ${url.clicks} times</li>
+           <p>Saved on ${url.created_at}</p>
            <p>${url.longUrl}</p>
      `)})
     }
