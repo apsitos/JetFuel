@@ -88,7 +88,7 @@ const getUrls = (id) => {
      response.data.map((url) => {
        console.log(url);
        $('.url-list').append(`
-        <a href= ${url.longUrl}>
+        <a href= ${url.longUrl} target='_blank' >
           <li data-id = ${url.id} class='url'>${url.short}  </li>
         </a>
         <p>Visited ${url.clicks} times</p>
