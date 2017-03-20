@@ -50,10 +50,13 @@ app.get('/api/folders/:id/urls', (request, response) => {
     .catch((error) => {
       console.error('something is wrong with the redirect', error);
     })
-
 })
 
 app.get('/api/folders/:id/mostPopular', (request, response) => {
+  const { id } = request.params
+  if (id === 'favicon.ico') {
+    return
+  }
   database('urls').where('folderId', request.params.id).select().orderBy('clicks', 'desc')
   .then((urls) => {
     console.log(urls)
@@ -72,7 +75,7 @@ app.get('/:id', (request, response) => {
   .then(function() {
     database('urls').where('id', id).select('longUrl')
     .then((dataObj) => {
-      // console.log(dataObj[0].longUrl);
+      console.log(dataObj[0].longUrl);
       // if(dataObj[0].longUrl=== `http://www.foodnetwork.com`)
       // {response.redirect(`http://www.foodnetwork.com`)}
       response.redirect(302, dataObj[0].longUrl)
