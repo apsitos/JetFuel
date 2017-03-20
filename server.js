@@ -45,6 +45,7 @@ app.get('/api/folders', (request, response) => {
 app.get('/api/folders/:id/urls', (request, response) => {
   database('urls').where('folderId', request.params.id)
     .then((urls) => {
+      console.log(request.params);
       response.status(200).json(urls)
     })
     .catch((error) => {
@@ -62,7 +63,20 @@ app.get('/api/folders/:id/mostPopular', (request, response) => {
     console.log(urls)
     response.status(200).json(urls);
   })
-  .catch(error => console.error('no sorting!', error))
+  .catch(error => console.error('not sorting by popularity', error))
+})
+
+app.get('/api/folders/:id/date', (request, response) => {
+  const { id } = request.params;
+  if (id === 'favicon.ico') {
+    return
+  }
+  database('urls').where('folderId', request.params.id).select().orderBy('created_at', 'desc')
+  .then((urls) => {
+    console.log(urls);
+    response.status(200).json(urls);
+  })
+  .catch(error => console.error('not sorting by date', error))
 })
 
 app.get('/:id', (request, response) => {

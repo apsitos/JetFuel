@@ -48,10 +48,11 @@ $('.links-container').on('click', '.popular', function() {
   sortPopularity(id)
 })
 
-
 //sort by Date
-$('.date').on('click', (e) => {
-
+$('.links-container').on('click', '.date', (e) => {
+  console.log(e.target);
+  const id = e.target.id;
+  sortDate(id);
 })
 
 const addCount = (clicks) => {
@@ -103,7 +104,7 @@ const getUrls = (id) => {
         <input class = 'long-url' type='text' placeholder='shorten a url' />
         <button class='shorten-url' type='button'>Submit</button>
         <p class='buttons'>Sort By<button class='popular' id=${response.data[0].folderId} type='button'>Popularity</button>
-        <button class='date' type='button'>Date</button></p>
+        <button class='date' id=${response.data[0].folderId} type='button'>Date</button></p>
         <div data-id = ${response.id}>
           <ul class='url-list'></ul>
         </div>
@@ -130,8 +131,14 @@ const redirect = (id) => {
 const sortPopularity = (id) => {
   axios.get(`/api/folders/${id}/mostPopular`, {
     id
-  }).then(response => response.json)
-  .then(response => getUrls(response))
+  }).then(response => getUrls(response))
+}
+
+const sortDate = (id) => {
+  console.log(id);
+  axios.get(`/api/folders/${id}/date`, {
+    id: id
+  }).then(response => getUrls(response))
 }
 
 const makeFolder = (name)=> {
