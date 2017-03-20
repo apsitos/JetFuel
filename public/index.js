@@ -82,7 +82,7 @@ const appendUrls = (response) => {
  `);
  response.data.map((url) => {
    $('.url-list').append(`
-    <a href= ${url.longUrl} target='_blank' onclick='addCount(${url.clicks})' >
+    <a href= `jetfuels.herokuapp.com${url.longUrl}` target='_blank' onclick='addCount(${url.clicks})' >
       <li data-id = ${url.id} class='url'>${url.short}</li>
     </a>
     <p>Visited ${url.clicks} times</p>
@@ -95,7 +95,6 @@ const appendUrls = (response) => {
 const addFolders = () => {
   axios.get('/api/folders')
   .then((response) => {
-    console.log(response);
     $('.folder-list').text('');
     response.data.map((folder) => {
       $('.folder-list').append(
