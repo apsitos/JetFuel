@@ -138,7 +138,30 @@ const sortDate = (id) => {
   console.log(id);
   axios.get(`/api/folders/${id}/date`, {
     id: id
-  }).then(response => getUrls(response))
+  }).then(response => {
+    console.log(response)
+    $('.links-container').text('');
+    $('.links-container').empty();
+    $('.links-container').append(`
+      <input class = 'long-url' type='text' placeholder='shorten a url' />
+      <button class='shorten-url' type='button'>Submit</button>
+      <p class='buttons'>Sort By<button class='popular' id=${response.data[0].folderId} type='button'>Popularity</button>
+      <button class='date' id=${response.data[0].folderId} type='button'>Date</button></p>
+      <div data-id = ${response.id}>
+        <ul class='url-list'></ul>
+      </div>
+   `);
+    response.data.map((url) => {
+      $('.links-container').append(`
+        <a href= ${url.longUrl} target='_blank' onclick='addCount(${url.clicks})' >
+          <li data-id = ${url.id} class='url'>${url.short}</li>
+        </a>
+        <p>Visited ${url.clicks} times</p>
+        <p class='date'>Saved on ${url.created_at}</p>
+        <p>${url.longUrl}</p>
+      `)
+    })
+  })
 }
 
 const makeFolder = (name)=> {

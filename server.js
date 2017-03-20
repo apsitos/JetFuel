@@ -45,7 +45,6 @@ app.get('/api/folders', (request, response) => {
 app.get('/api/folders/:id/urls', (request, response) => {
   database('urls').where('folderId', request.params.id)
     .then((urls) => {
-      console.log(request.params);
       response.status(200).json(urls)
     })
     .catch((error) => {
@@ -60,7 +59,7 @@ app.get('/api/folders/:id/mostPopular', (request, response) => {
   }
   database('urls').where('folderId', request.params.id).select().orderBy('clicks', 'desc')
   .then((urls) => {
-    console.log(urls)
+    console.log('popular call', urls)
     response.status(200).json(urls);
   })
   .catch(error => console.error('not sorting by popularity', error))
@@ -73,7 +72,7 @@ app.get('/api/folders/:id/date', (request, response) => {
   }
   database('urls').where('folderId', request.params.id).select().orderBy('created_at', 'desc')
   .then((urls) => {
-    console.log(urls);
+    console.log('date call', urls);
     response.status(200).json(urls);
   })
   .catch(error => console.error('not sorting by date', error))
