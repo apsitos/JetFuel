@@ -55,7 +55,7 @@ app.get('/api/folders/:id/urls', (request, response) => {
 
 app.get('/api/folders/:id/mostPopular', (request, response) => {
   database('urls').where('folderId', request.params.id).select().orderBy('clicks', 'desc')
-  .then(urls => {
+  .then((urls) => {
     console.log(urls)
     response.status(200).json(urls);
   })
@@ -73,10 +73,10 @@ app.get('/:id', (request, response) => {
     database('urls').where('id', id).select('longUrl')
     .then((dataObj) => {
       // console.log(dataObj[0].longUrl);
-      if(dataObj[0].longUrl=== `http://www.foodnetwork.com`)
-      {response.redirect(`http://www.foodnetwork.com`)}
+      // if(dataObj[0].longUrl=== `http://www.foodnetwork.com`)
+      // {response.redirect(`http://www.foodnetwork.com`)}
+      response.redirect(302, dataObj[0].longUrl)
     })
-    // response.redirect(302, dataObj[0].longUrl)
     .catch((error) => {
       console.error('no redirect sent', error);
     })

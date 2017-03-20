@@ -41,10 +41,10 @@ $('.links-container').on('click', '.url', (e) => {
 })
 
 //sort by Popularity
-$('.links-container').on('click', (e) => {
-  console.log(e.target);
-  const id = e.target.id
-  console.log('click pop', id);
+$('.links-container').on('click', '.popular', function() {
+  console.log(this);
+  const id = this.id
+  console.log('sort popular', id);
   sortPopularity(id)
 })
 
@@ -78,18 +78,18 @@ const addFolders = () => {
 const getUrls = (id) => {
   axios.get(`/api/folders/${id}/urls`)
   .then((response) => {
-    // if(response.data.length === 0){
-    //   $('.links-container').empty()
-    //   $('.links-container').append(
-    //   `<div data-id=${response.id}>
-    //     <input class = 'long-url' type='text' placeholder='shorten a url' />
-    //     <button class='shorten-url' type='button'>Submit</button>
-    //     <p class='buttons'>Sort By<button class='popular' id=${response.id} type='button'>Popularity</button>
-    //     <button class='date' type='button'>Date</button></p>
-    //     <ul class= 'url-list'></ul>
-    //   </div>`
-    //   )
-    // } else {
+    if(response.data.length === 0){
+      $('.links-container').empty()
+      $('.links-container').append(
+      `<div data-id=${response.id}>
+        <input class = 'long-url' type='text' placeholder='shorten a url' />
+        <button class='shorten-url' type='button'>Submit</button>
+        <p class='buttons'>Sort By<button class='popular' id=${response.id} type='button'>Popularity</button>
+        <button class='date' type='button'>Date</button></p>
+        <ul class= 'url-list'></ul>
+      </div>`
+      )
+    } else {
       console.log(response.data[0].folderId);
       $('.links-container').text('');
       $('.links-container').empty();
@@ -112,7 +112,8 @@ const getUrls = (id) => {
         <p>${url.longUrl}</p>`
      )})
     }
-  )};
+  })
+};
 
 const validateUrl = (url) => {
   const urlRegex = /^(http|https)?:\/\/[w]{2,4}[a-zA-Z0-9-\.]+\.[a-z]{1,10}/
@@ -126,8 +127,7 @@ const saveUrl = (folderId,longUrl, id) => {
   axios.post('/api/urls', {
     folderId,
     longUrl,
-  }).then(response=> respoonse.json())
-  .then(urls => getUrls(urls))
+  }).then(urls => getUrls(id))
 }
 
 const addCount = (clicks) => {
@@ -141,7 +141,6 @@ const redirect = (id) => {
 }
 
 const sortPopularity = (id) => {
-  console.log('sort by blonde', id);
   axios.get(`/api/folders/${id}/mostPopular`, {
     id
   }).then(response => response.json)
