@@ -82,8 +82,8 @@ const appendUrls = (response) => {
  `);
  response.data.map((url) => {
    $('.url-list').append(`
-    <a href= `jetfuels.herokuapp.com${url.longUrl}` target='_blank' onclick='addCount(${url.clicks})' >
-      <li data-id = ${url.id} class='url'>${url.short}</li>
+    <a href= '${url.longUrl}' target='_blank' onclick='addCount(${url.clicks})' >
+      <li data-id = ${url.id} class='url'>jetfuels.herokuapp.com/${url.short}</li>
     </a>
     <p>Visited ${url.clicks} times</p>
     <p class='date'>Saved on ${url.created_at}</p>
