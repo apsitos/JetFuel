@@ -54,10 +54,16 @@ $('.date').on('click', (e) => {
 
 })
 
-const makeFolder = (name)=> {
-  axios.post('/api/folders',{
-      name:name
-    })
+const addCount = (clicks) => {
+  ++clicks;
+}
+
+const validateUrl = (url) => {
+  const urlRegex = /^(http|https)?:\/\/[w]{2,4}[a-zA-Z0-9-\.]+\.[a-z]{1,10}/
+  if(!urlRegex.test(url)){
+    url = 'http://' + url
+  }
+  return url;
 }
 
 const addFolders = () => {
@@ -115,25 +121,6 @@ const getUrls = (id) => {
   })
 };
 
-const validateUrl = (url) => {
-  const urlRegex = /^(http|https)?:\/\/[w]{2,4}[a-zA-Z0-9-\.]+\.[a-z]{1,10}/
-  if(!urlRegex.test(url)){
-    url = 'http://' + url
-  }
-  return url;
-}
-
-const saveUrl = (folderId,longUrl, id) => {
-  axios.post('/api/urls', {
-    folderId,
-    longUrl,
-  }).then(urls => getUrls(id))
-}
-
-const addCount = (clicks) => {
-  ++clicks;
-}
-
 const redirect = (id) => {
   axios.get(`/${id}`, {
     id
@@ -145,4 +132,17 @@ const sortPopularity = (id) => {
     id
   }).then(response => response.json)
   .then(response => getUrls(response))
+}
+
+const makeFolder = (name)=> {
+  axios.post('/api/folders',{
+      name:name
+    })
+}
+
+const saveUrl = (folderId,longUrl, id) => {
+  axios.post('/api/urls', {
+    folderId,
+    longUrl,
+  }).then(urls => getUrls(id))
 }
