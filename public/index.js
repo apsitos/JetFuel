@@ -55,6 +55,7 @@ $('.links-container').on('click', '.date', (e) => {
   sortDate(id);
 })
 
+//helper functions can be broken out
 const addCount = (clicks) => {
   ++clicks;
 }
@@ -90,6 +91,7 @@ const appendUrls = (response) => {
  )})
 }
 
+//API calls
 const addFolders = () => {
   axios.get('/api/folders')
   .then((response) => {
@@ -135,7 +137,7 @@ const redirect = (id) => {
 const sortPopularity = (id) => {
   axios.get(`/api/folders/${id}/mostPopular`, {
     id
-  }).then(response => getUrls(response))
+  }).then(response => appendUrls(response))
 }
 
 const sortDate = (id) => {

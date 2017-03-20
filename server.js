@@ -11,6 +11,12 @@ const database = require('knex')(configuration);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next()
+})
+
 app.set('port', process.env.PORT || 3000)
 app.locals.title = 'JetFuel'
 app.locals.folders = [{
@@ -57,6 +63,7 @@ app.get('/api/folders/:id/mostPopular', (request, response) => {
   if (id === 'favicon.ico') {
     return
   }
+  //somehow add conditional to check for how column is sorted
   database('urls').where('folderId', request.params.id).select().orderBy('clicks', 'desc')
   .then((urls) => {
     console.log('popular call', urls)
@@ -70,6 +77,7 @@ app.get('/api/folders/:id/date', (request, response) => {
   if (id === 'favicon.ico') {
     return
   }
+  //somehow add conditional to check for how column is sorted
   database('urls').where('folderId', request.params.id).select().orderBy('created_at', 'desc')
   .then((urls) => {
     console.log('date call', urls);
@@ -89,8 +97,6 @@ app.get('/:id', (request, response) => {
     database('urls').where('id', id).select('longUrl')
     .then((dataObj) => {
       console.log(dataObj[0].longUrl);
-      // if(dataObj[0].longUrl=== `http://www.foodnetwork.com`)
-      // {response.redirect(`http://www.foodnetwork.com`)}
       response.redirect(302, dataObj[0].longUrl)
     })
     .catch((error) => {
