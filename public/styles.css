@@ -17,6 +17,7 @@ h1 {
   background-color: lightslategrey;
   width: 100%;
   height: 200px;
+  overflow: scroll;
 }
 
 .folder-name, .long-url {
